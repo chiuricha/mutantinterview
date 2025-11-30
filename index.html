@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Mutant Border Screening</title>
   <style>
     body {
-      background: #05060a;
       color: #f5f5f5;
       font-family: monospace;
       margin: 0;
@@ -13,7 +13,30 @@
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
+      transition: background 0.3s ease;
     }
+
+    /* Default + result backgrounds */
+    body.bg-default {
+      background: #05060a;
+    }
+
+    body.bg-green {
+      background: #0b4;
+      /* green */
+    }
+
+    body.bg-yellow {
+      background: #fc0;
+      /* yellow */
+      color: #000;
+    }
+
+    body.bg-red {
+      background: #900;
+      /* red */
+    }
+
     .screen {
       max-width: 700px;
       margin: 40px 20px;
@@ -22,13 +45,22 @@
       background: radial-gradient(circle at top, #141824, #05060a 60%);
       box-shadow: 0 0 20px rgba(255, 65, 65, 0.3);
     }
-    .hidden { display: none; }
-    h1, h2, h3 {
+
+    .hidden {
+      display: none;
+    }
+
+    h1,
+    h2,
+    h3 {
       margin-top: 0;
       text-transform: uppercase;
       letter-spacing: 2px;
     }
-    p { line-height: 1.5; }
+
+    p {
+      line-height: 1.5;
+    }
 
     button {
       margin-top: 20px;
@@ -41,11 +73,13 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
     button.secondary {
       background: transparent;
       color: #ffbebe;
       margin-right: 10px;
     }
+
     button:hover {
       filter: brightness(1.1);
     }
@@ -54,34 +88,54 @@
       margin: 10px 0 20px;
       font-size: 1.1rem;
     }
+
     label {
       display: block;
       margin: 6px 0;
       cursor: pointer;
     }
+
     input[type="radio"] {
       margin-right: 8px;
     }
+
     .score {
       font-size: 1.4rem;
       color: #ffbebe;
     }
+
+    /* Result border + glow colors */
+    .result-green {
+      border-color: #0f0;
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    }
+
+    .result-yellow {
+      border-color: #ff0;
+      box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
+    }
+
+    .result-red {
+      border-color: #f00;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+    }
   </style>
 </head>
-<body>
+
+<body class="bg-default">
 
   <!-- INTRO -->
   <div id="screen-intro" class="screen">
     <h1>Mutant Border Checkpoint</h1>
     <p>
-      You are entering a controlled zone.<br>
+      You are entering a controlled zone.<br />
       This terminal screens for <strong>mutant traits</strong> that may threaten public safety.
       Answer each question honestly.
     </p>
     <p>
-      Classification levels:<br>
-      - 0–20: Human – Low Risk<br>
-      - 21–60: Possible Mutant – Under Watch<br>
+      Classification levels:<br />
+      - 0–20: Human – Low Risk<br />
+      - 21–60: Possible Mutant – Under Watch<br />
       - 61–100: High-Risk Mutant
     </p>
     <button onclick="goTo('screen-q1')">Start Screening</button>
@@ -183,6 +237,11 @@
 
   <script>
     function goTo(id) {
+      // reset background to default on non-result screens
+      if (id !== 'screen-result') {
+        document.body.className = 'bg-default';
+      }
+
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
@@ -209,25 +268,41 @@
         score += parseInt(ans.value, 10);
       }
 
-      let label, desc;
+      let label, desc, bodyClass, boxClass;
+
       if (score <= 20) {
         label = "HUMAN – LOW RISK";
-        desc  = "You show no dangerous traits. You may pass the border.";
+        desc = "You show no dangerous traits. You may pass the border.";
+        bodyClass = "bg-green";
+        boxClass = "result-green";
       } else if (score <= 60) {
         label = "POSSIBLE MUTANT – UNDER WATCH";
-        desc  = "Your answers suggest unstable traits. You will be monitored by authorities.";
+        desc = "Your answers suggest unstable traits. You will be monitored by authorities.";
+        bodyClass = "bg-yellow";
+        boxClass = "result-yellow";
       } else {
         label = "HIGH-RISK MUTANT";
-        desc  = "You show strong mutant-like behavior. Access denied. Further screening required.";
+        desc = "You show strong mutant-like behavior. Access denied. Further screening required.";
+        bodyClass = "bg-red";
+        boxClass = "result-red";
       }
 
+      // Update text
       document.getElementById('score-text').textContent =
         "Mutant Risk Score: " + score + " / 100";
       document.getElementById('label-text').textContent = label;
       document.getElementById('desc-text').textContent = desc;
 
+      // Set page background
+      document.body.className = bodyClass;
+
+      // Style result box
+      const resultScreen = document.getElementById('screen-result');
+      resultScreen.className = "screen " + boxClass;
+
       goTo('screen-result');
     }
   </script>
 </body>
+
 </html>
