@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mutant Border Screening</title>
+  <style>
+    body {
+      background: #05060a;
+      color: #f5f5f5;
+      font-family: monospace;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .screen {
+      max-width: 700px;
+      margin: 40px 20px;
+      padding: 24px;
+      border: 2px solid #ff4141;
+      background: radial-gradient(circle at top, #141824, #05060a 60%);
+      box-shadow: 0 0 20px rgba(255, 65, 65, 0.3);
+    }
+    .hidden { display: none; }
+    h1, h2, h3 {
+      margin-top: 0;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    p { line-height: 1.5; }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: 1px solid #ff4141;
+      background: #ff4141;
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    button.secondary {
+      background: transparent;
+      color: #ffbebe;
+      margin-right: 10px;
+    }
+    button:hover {
+      filter: brightness(1.1);
+    }
+
+    .question-text {
+      margin: 10px 0 20px;
+      font-size: 1.1rem;
+    }
+    label {
+      display: block;
+      margin: 6px 0;
+      cursor: pointer;
+    }
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+    .score {
+      font-size: 1.4rem;
+      color: #ffbebe;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- INTRO -->
+  <div id="screen-intro" class="screen">
+    <h1>Mutant Border Checkpoint</h1>
+    <p>
+      You are entering a controlled zone.<br>
+      This terminal screens for <strong>mutant traits</strong> that may threaten public safety.
+      Answer each question honestly.
+    </p>
+    <p>
+      Classification levels:<br>
+      - 0–20: Human – Low Risk<br>
+      - 21–60: Possible Mutant – Under Watch<br>
+      - 61–100: High-Risk Mutant
+    </p>
+    <button onclick="goTo('screen-q1')">Start Screening</button>
+  </div>
+
+  <!-- Q1 -->
+  <div id="screen-q1" class="screen hidden">
+    <h2>Screening Question 1 / 5</h2>
+    <p class="question-text">
+      If you discovered you had strange abilities, what would you do first?
+    </p>
+    <label><input type="radio" name="q1" value="0">
+      Hide them and act normal.</label>
+    <label><input type="radio" name="q1" value="10">
+      Use them in secret to quietly help a few people.</label>
+    <label><input type="radio" name="q1" value="20">
+      Use them openly, even if it scares others.</label>
+
+    <button class="secondary" onclick="goTo('screen-intro')">Back</button>
+    <button onclick="nextFrom('q1','screen-q2')">Next</button>
+  </div>
+
+  <!-- Q2 -->
+  <div id="screen-q2" class="screen hidden">
+    <h2>Screening Question 2 / 5</h2>
+    <p class="question-text">
+      When rules feel unfair, what do you usually do?
+    </p>
+    <label><input type="radio" name="q2" value="0">
+      Follow them anyway.</label>
+    <label><input type="radio" name="q2" value="10">
+      Complain but still follow them.</label>
+    <label><input type="radio" name="q2" value="20">
+      Ignore or break them.</label>
+
+    <button class="secondary" onclick="goTo('screen-q1')">Back</button>
+    <button onclick="nextFrom('q2','screen-q3')">Next</button>
+  </div>
+
+  <!-- Q3 -->
+  <div id="screen-q3" class="screen hidden">
+    <h2>Screening Question 3 / 5</h2>
+    <p class="question-text">
+      How do you react when someone is bullied or treated badly in front of you?
+    </p>
+    <label><input type="radio" name="q3" value="0">
+      Stay out of it.</label>
+    <label><input type="radio" name="q3" value="10">
+      Speak up or tell someone in charge.</label>
+    <label><input type="radio" name="q3" value="20">
+      Step in and stop it yourself, whatever it takes.</label>
+
+    <button class="secondary" onclick="goTo('screen-q2')">Back</button>
+    <button onclick="nextFrom('q3','screen-q4')">Next</button>
+  </div>
+
+  <!-- Q4 -->
+  <div id="screen-q4" class="screen hidden">
+    <h2>Screening Question 4 / 5</h2>
+    <p class="question-text">
+      Do you trust governments to use power fairly?
+    </p>
+    <label><input type="radio" name="q4" value="0">
+      Yes, most of the time.</label>
+    <label><input type="radio" name="q4" value="10">
+      Not sure.</label>
+    <label><input type="radio" name="q4" value="20">
+      No, power is often abused.</label>
+
+    <button class="secondary" onclick="goTo('screen-q3')">Back</button>
+    <button onclick="nextFrom('q4','screen-q5')">Next</button>
+  </div>
+
+  <!-- Q5 -->
+  <div id="screen-q5" class="screen hidden">
+    <h2>Screening Question 5 / 5</h2>
+    <p class="question-text">
+      Do you feel different from other people?
+    </p>
+    <label><input type="radio" name="q5" value="0">
+      Not really.</label>
+    <label><input type="radio" name="q5" value="10">
+      Sometimes.</label>
+    <label><input type="radio" name="q5" value="20">
+      Very often.</label>
+
+    <button class="secondary" onclick="goTo('screen-q4')">Back</button>
+    <button onclick="finishTest()">Show Result</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="screen hidden">
+    <h2>Screening Result</h2>
+    <p class="score" id="score-text"></p>
+    <h3 id="label-text"></h3>
+    <p id="desc-text"></p>
+    <button onclick="location.reload()">Restart Screening</button>
+  </div>
+
+  <script>
+    function goTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function nextFrom(questionName, nextScreenId) {
+      const selected = document.querySelector(`input[name="${questionName}"]:checked`);
+      if (!selected) {
+        alert('Please select an answer to continue.');
+        return;
+      }
+      goTo(nextScreenId);
+    }
+
+    function finishTest() {
+      const last = document.querySelector('input[name="q5"]:checked');
+      if (!last) {
+        alert('Please select an answer to continue.');
+        return;
+      }
+
+      let score = 0;
+      for (let i = 1; i <= 5; i++) {
+        const ans = document.querySelector(`input[name="q${i}"]:checked`);
+        score += parseInt(ans.value, 10);
+      }
+
+      let label, desc;
+      if (score <= 20) {
+        label = "HUMAN – LOW RISK";
+        desc  = "You show no dangerous traits. You may pass the border.";
+      } else if (score <= 60) {
+        label = "POSSIBLE MUTANT – UNDER WATCH";
+        desc  = "Your answers suggest unstable traits. You will be monitored by authorities.";
+      } else {
+        label = "HIGH-RISK MUTANT";
+        desc  = "You show strong mutant-like behavior. Access denied. Further screening required.";
+      }
+
+      document.getElementById('score-text').textContent =
+        "Mutant Risk Score: " + score + " / 100";
+      document.getElementById('label-text').textContent = label;
+      document.getElementById('desc-text').textContent = desc;
+
+      goTo('screen-result');
+    }
+  </script>
+</body>
+</html>
