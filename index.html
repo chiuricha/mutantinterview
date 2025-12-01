@@ -1,308 +1,143 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
   <meta charset="UTF-8" />
-  <title>Mutant Border Screening</title>
+  <title>Mutant Screening Terminal</title>
   <style>
     body {
+      background: #05060a;
       color: #f5f5f5;
       font-family: monospace;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      transition: background 0.3s ease;
+      text-align: center;
     }
-
-    /* Default + result backgrounds */
-    body.bg-default {
-      background: #05060a;
-    }
-
-    body.bg-green {
-      background: #0b4;
-      /* green */
-    }
-
-    body.bg-yellow {
-      background: #fc0;
-      /* yellow */
-      color: #000;
-    }
-
-    body.bg-red {
-      background: #900;
-      /* red */
-    }
-
-    .screen {
-      max-width: 750px;
-      margin: 40px 20px;
-      padding: 24px;
-      border: 2px solid #ff4141;
-      background: radial-gradient(circle at top, #141824, #05060a 60%);
-      box-shadow: 0 0 20px rgba(255, 65, 65, 0.3);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    h1,
-    h2,
-    h3 {
-      margin-top: 0;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: 1px solid #ff4141;
-      background: #ff4141;
-      color: #fff;
-      font-family: inherit;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    button.secondary {
-      background: transparent;
-      color: #ffbebe;
-      margin-right: 10px;
-    }
-
-    button:hover {
-      filter: brightness(1.1);
-    }
-
-    .question-text {
-      margin: 10px 0 20px;
-      font-size: 1.1rem;
-    }
-
-    label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-    }
-
-    input[type="radio"] {
-      margin-right: 8px;
-    }
-
-    .score {
-      font-size: 1.4rem;
-      color: #ffbebe;
-    }
-
-    /* Result border + glow colors */
-    .result-green {
-      border-color: #0f0;
-      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-    }
-
-    .result-yellow {
-      border-color: #ff0;
-      box-shadow: 0 0 20px rgba(255, 255, 0, 0.5);
-    }
-
-    .result-red {
-      border-color: #f00;
-      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-    }
+    .screen { max-width: 600px; margin: 40px auto; }
+    button { margin-top: 20px; padding: 10px 20px; }
+    .hidden { display: none; }
+    fieldset { text-align: left; margin-top: 20px; }
+    label { display: block; margin: 5px 0; }
   </style>
 </head>
 
-<body class="bg-default">
+<body>
 
   <!-- INTRO -->
-  <div id="screen-intro" class="screen">
-    <h1>Mutant Border Checkpoint</h1>
-    <p>
-      You are entering a controlled zone.<br />
-      This terminal screens for <strong>mutant traits</strong> that may threaten public safety.
-      Answer each question honestly.
-    </p>
-    <p>
-      Classification levels:<br />
-      - 0–20: Human – Low Risk<br />
-      - 21–60: Possible Mutant – Under Watch<br />
-      - 61–100: High-Risk Mutant
-    </p>
-    <button onclick="goTo('screen-q1')">Start Screening</button>
+  <div id="intro" class="screen">
+    <h1>MUTANT BORDER CHECKPOINT</h1>
+    <p>Screening for mutant traits. Answer honestly.</p>
+    <button onclick="goTo('q1')">Start Screening</button>
   </div>
 
   <!-- Q1 -->
-  <div id="screen-q1" class="screen hidden">
-    <h2>Screening Question 1 / 5</h2>
-    <p class="question-text">
-      If you discovered you had strange abilities, what would you do first?
-    </p>
-    <label><input type="radio" name="q1" value="0">
-      Hide them and act normal.</label>
-    <label><input type="radio" name="q1" value="10">
-      Use them in secret to quietly help a few people.</label>
-    <label><input type="radio" name="q1" value="20">
-      Use them openly, even if it scares others.</label>
-
-    <button class="secondary" onclick="goTo('screen-intro')">Back</button>
-    <button onclick="nextFrom('q1','screen-q2')">Next</button>
+  <div id="q1" class="screen hidden">
+    <fieldset>
+      <legend>1. If you discovered you had powers, what would you do first?</legend>
+      <label><input type="radio" name="q1" value="0"> Hide them and act normal.</label>
+      <label><input type="radio" name="q1" value="10"> Use them in secret to quietly help.</label>
+      <label><input type="radio" name="q1" value="20"> Use them openly, even if it scares others.</label>
+    </fieldset>
+    <button onclick="goTo('intro')">Back</button>
+    <button onclick="next('q1','q2')">Next</button>
   </div>
 
   <!-- Q2 -->
-  <div id="screen-q2" class="screen hidden">
-    <h2>Screening Question 2 / 5</h2>
-    <p class="question-text">
-      When rules feel unfair, what do you usually do?
-    </p>
-    <label><input type="radio" name="q2" value="0">
-      Follow them anyway.</label>
-    <label><input type="radio" name="q2" value="10">
-      Complain but still follow them.</label>
-    <label><input type="radio" name="q2" value="20">
-      Ignore or break them.</label>
-
-    <button class="secondary" onclick="goTo('screen-q1')">Back</button>
-    <button onclick="nextFrom('q2','screen-q3')">Next</button>
+  <div id="q2" class="screen hidden">
+    <fieldset>
+      <legend>2. When rules feel unfair, what do you usually do?</legend>
+      <label><input type="radio" name="q2" value="0"> Follow them anyway.</label>
+      <label><input type="radio" name="q2" value="10"> Complain but still follow.</label>
+      <label><input type="radio" name="q2" value="20"> Ignore or break them.</label>
+    </fieldset>
+    <button onclick="goTo('q1')">Back</button>
+    <button onclick="next('q2','q3')">Next</button>
   </div>
 
   <!-- Q3 -->
-  <div id="screen-q3" class="screen hidden">
-    <h2>Screening Question 3 / 5</h2>
-    <p class="question-text">
-      How do you react when someone is bullied or treated badly in front of you?
-    </p>
-    <label><input type="radio" name="q3" value="0">
-      Stay out of it.</label>
-    <label><input type="radio" name="q3" value="10">
-      Speak up or tell someone in charge.</label>
-    <label><input type="radio" name="q3" value="20">
-      Step in and stop it yourself, whatever it takes.</label>
-
-    <button class="secondary" onclick="goTo('screen-q2')">Back</button>
-    <button onclick="nextFrom('q3','screen-q4')">Next</button>
+  <div id="q3" class="screen hidden">
+    <fieldset>
+      <legend>3. How do you react when someone is bullied?</legend>
+      <label><input type="radio" name="q3" value="0"> Stay out of it.</label>
+      <label><input type="radio" name="q3" value="10"> Speak up or tell someone.</label>
+      <label><input type="radio" name="q3" value="20"> Step in and stop it.</label>
+    </fieldset>
+    <button onclick="goTo('q2')">Back</button>
+    <button onclick="next('q3','q4')">Next</button>
   </div>
 
   <!-- Q4 -->
-  <div id="screen-q4" class="screen hidden">
-    <h2>Screening Question 4 / 5</h2>
-    <p class="question-text">
-      Do you trust governments to use power fairly?
-    </p>
-    <label><input type="radio" name="q4" value="0">
-      Yes, most of the time.</label>
-    <label><input type="radio" name="q4" value="10">
-      Not sure.</label>
-    <label><input type="radio" name="q4" value="20">
-      No, power is often abused.</label>
-
-    <button class="secondary" onclick="goTo('screen-q3')">Back</button>
-    <button onclick="nextFrom('q4','screen-q5')">Next</button>
+  <div id="q4" class="screen hidden">
+    <fieldset>
+      <legend>4. Do you trust the government to use power fairly?</legend>
+      <label><input type="radio" name="q4" value="0"> Yes.</label>
+      <label><input type="radio" name="q4" value="10"> Not sure.</label>
+      <label><input type="radio" name="q4" value="20"> No, power is abused.</label>
+    </fieldset>
+    <button onclick="goTo('q3')">Back</button>
+    <button onclick="next('q4','q5')">Next</button>
   </div>
 
   <!-- Q5 -->
-  <div id="screen-q5" class="screen hidden">
-    <h2>Screening Question 5 / 5</h2>
-    <p class="question-text">
-      Do you feel different from other people?
-    </p>
-    <label><input type="radio" name="q5" value="0">
-      Not really.</label>
-    <label><input type="radio" name="q5" value="10">
-      Sometimes.</label>
-    <label><input type="radio" name="q5" value="20">
-      Very often.</label>
-
-    <button class="secondary" onclick="goTo('screen-q4')">Back</button>
+  <div id="q5" class="screen hidden">
+    <fieldset>
+      <legend>5. Do you feel different from other people?</legend>
+      <label><input type="radio" name="q5" value="0"> Not really.</label>
+      <label><input type="radio" name="q5" value="10"> Sometimes.</label>
+      <label><input type="radio" name="q5" value="20"> Very often.</label>
+    </fieldset>
+    <button onclick="goTo('q4')">Back</button>
     <button onclick="finishTest()">Show Result</button>
   </div>
 
   <!-- RESULT -->
-  <div id="screen-result" class="screen hidden">
-    <h2>Screening Result</h2>
-    <p class="score" id="score-text"></p>
-    <h3 id="label-text"></h3>
-    <p id="desc-text"></p>
-    <button onclick="location.reload()">Restart Screening</button>
-  </div>
+  <div id="result" class="screen hidden"></div>
+
 
   <script>
     function goTo(id) {
-      // reset background to default on non-result screens
-      if (id !== 'screen-result') {
-        document.body.className = 'bg-default';
-      }
-
       document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
 
-    function nextFrom(questionName, nextScreenId) {
-      const selected = document.querySelector(`input[name="${questionName}"]:checked`);
-      if (!selected) {
-        alert('Please select an answer to continue.');
+    function next(question, nextPage) {
+      const checked = document.querySelector(`input[name="${question}"]:checked`);
+      if (!checked) {
+        alert("Please select an answer to continue.");
         return;
       }
-      goTo(nextScreenId);
+      goTo(nextPage);
     }
 
     function finishTest() {
-      const last = document.querySelector('input[name="q5"]:checked');
-      if (!last) {
-        alert('Please select an answer to continue.');
-        return;
-      }
-
       let score = 0;
       for (let i = 1; i <= 5; i++) {
-        const ans = document.querySelector(`input[name="q${i}"]:checked`);
-        score += parseInt(ans.value, 10);
+        const val = document.querySelector(`input[name="q${i}"]:checked`).value;
+        score += parseInt(val, 10);
       }
 
-      let label, desc, bodyClass, boxClass;
-
+      let label, text;
       if (score <= 20) {
         label = "HUMAN – LOW RISK";
-        desc = "You show no dangerous traits. You may pass the border.";
-        bodyClass = "bg-green";
-        boxClass = "result-green";
-      } else if (score <= 60) {
+        text = "You show no dangerous traits. You may pass the border.";
+      } 
+      else if (score <= 60) {
         label = "POSSIBLE MUTANT – UNDER WATCH";
-        desc = "Your answers suggest unstable traits. You will be monitored by authorities.";
-        bodyClass = "bg-yellow";
-        boxClass = "result-yellow";
-      } else {
+        text = "Your answers suggest unstable traits. You will be monitored.";
+      } 
+      else {
         label = "HIGH-RISK MUTANT";
-        desc = "You show strong mutant-like behavior. Access denied. Further screening required.";
-        bodyClass = "bg-red";
-        boxClass = "result-red";
+        text = "You show strong mutant-like behavior. Access denied.";
       }
 
-      // Update text
-      document.getElementById('score-text').textContent =
-        "Mutant Risk Score: " + score + " / 100";
-      document.getElementById('label-text').textContent = label;
-      document.getElementById('desc-text').textContent = desc;
-
-      // Set page background
-      document.body.className = bodyClass;
-
-      // Style result box
-      const resultScreen = document.getElementById('screen-result');
-      resultScreen.className = "screen " + boxClass;
-
-      goTo('screen-result');
+      const result = document.getElementById('result');
+      result.innerHTML = `
+        <h2>MUTANT RISK SCORE: ${score}</h2>
+        <h3>${label}</h3>
+        <p>${text}</p>
+        <button onclick="location.reload()">Restart Screening</button>
+      `;
+      goTo('result');
     }
   </script>
-</body>
 
+</body>
 </html>
+
